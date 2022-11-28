@@ -227,11 +227,17 @@
        * 결과해석: AdaBoost와 동일한 조건(max_depth = 10, n_estimator=100)으로 진행하였을때보다 성능이 '6%' 향상되었으며, GBM보단 '3% 낮은 성능'을 보인다. GBM의 target leakage와 prediction shift 문제점을 보완한 모델이 바로 이 CatBoost이다. 해당 데이터에선 값들이 모두 0과1로만 이루어져 있기 때문에 categorical한 데이터임에도 성능이 더 낮게 나왔음을 볼 수 있다. 데이터의 수가 많고 binary값이 아닌  데이터를 실험한 결과에선 CatBoost의 성능이 더 좋게 나을 수 있다고 기대해본다.  마지막으로, CatBoost는 GBM에 비해 '15배 이상 빠르게' 훈련 및 테스트 되는 것을 볼 수 있다.
     
     * 최종실험결과비교(정확도 높은순, base_learner: tree, max_depth=10, n_estimator=100)
+    
         1.GBM 정확도: 81.5988%
+        
         2.LightGBM 정확도: 81.3995%
+        
         3.XGBoost 정확도: 79.5626%
+        
         4.CatBoost 정확도: 78.5876%
+        
         5.AdaBoost 정확도: 72.4790%
+        
 
   
 </details>
