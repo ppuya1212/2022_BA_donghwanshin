@@ -126,6 +126,83 @@
 
   
 </details>
+
+## 4. Ensemble Learning
+<details>
+    <summary> View Contents </summary>
+    
+  * Ensemble: "이상치" 탐지 기법
+  
+  * 
+
+
+  * Bagging : asdf
+
+  * 아래 Bagging기반 앙상블 기법을 소개함
+      1. Random Forest -> parametric기법으로,
+
+          * 모든 데이터가 '하나'의 가우시안(정규)분포로부터 생성됨을 가정함.
+          * 학습은 정상데이터들의 가우시안분포의 평균(mu)과 공분산(var)행렬을 추정하며 이루어짐
+          * 테스트는 새로운 데이터가 생성확률이 낮으면 이상치, 높으면 정상으로 구분함
+
+          ![image](https://user-images.githubusercontent.com/77199749/201831498-e5f60dac-f6dd-48ca-8dfc-a87052a7b745.png)
+          
+          * 결과해석: Gaussian 기법은 추정이 간단하며 학습기간이 짧고, 적절한 threshold(epsilon)를 분포로부터정할 수 있다. 위 그림에서 보이는 것처럼 epsilon값을 줄일 수록 이상치의 개수(빨간색)가 증가하고, epsilon값을 늘릴 수록 이상치의 개수(빨간색)가 줄어드는 것을 알 수 있었다.
+
+
+  * Boosting: asdf
+  
+  * 아래의 4가지 Boosting기반 앙상블 모델들을 소개함
+    1. Auto-Encoder
+        * 이미지 데이터(예시)를 넣었을 때, 똑같은 이미지를 복원해내는 NN모델
+        * 이 때, 정상치만을 학습시켜 weight값을 저장하고 새로운 이상치가 들어왔을때 복원error값이 높아지므로, 복원이 잘 안될 수록 이상치로 판단
+        
+        ![image](https://user-images.githubusercontent.com/77199749/201831412-ec22f679-70cc-4d8b-8317-4211a7a14235.png)
+        
+        * 결과해석: Auto-encoder는 인코더단에서 압축한 latent vector를 decoder단에서 생성해내는 모델이다. 그림'outlier-score'그림을 통해 극히 outlier-score가 높은 데이터들을 통해 이상치를 탐지할 수 있었다. 또한 'Combination by average'그림을 통해 3개의 모델을 동시에 사용하고 이를 정규화함으로써 조금 더 정제된 Anomaly_score를 얻을 수 있다.
+    
+    
+    2. One Class Support Vector Machine(OCSVM)
+        * Threshold(임계치)가 아닌 "boundary"를 사용하여 이상치 여부를 판단함
+        * OCSVM은 원점으로부터의 거리들을 사용하여 "초평면 boundary"를 만들고, 이를 기준으로 이상치 여부를 판단
+        (참고)
+        * SVDD과 OCSVM의 공통점은, 모두 threshold(임계치)가 아닌 boundary를 생성하여 이상치여부를 구분하는 것임
+        * 차이점은, "boundary의 형태와 중심점"이 다름
+        * OCSVM에선 초평면을 활용하였다면, SVDD에선 "초구 boundary"를 사용하며 "원점이 중심이 아니어도 무방"함
+
+        ![image](https://user-images.githubusercontent.com/77199749/201831461-7e44eced-05fe-4b6f-b4de-3f99e07a17b7.png)
+        
+        * 결과해석: 일반적인 선형분류기인 SVM과 다르게 비선형성을 더한 OCSVM으로 원점으로부터 떨어진 거리로 초평면을 만들고 데이터들을 정상/이상치로 분류하는 성능이 그림에서처럼 눈에 띠게좋았다. 여러 데이터들 속에 포함되어 있는 데이터가 이상치일땐, 분류하기 어렵지만 위 그림처럼 경계면에서 발생하는 이상치는 threshold를 정하여 분류됨을 볼 수 있다.
+
+    3. Isolation Forest
+        * Forest라는 단어에서 알 수 있듯이, 분기를 하면서 이상치여부를 따지는 tree구조의 모델임
+        * 이 때, 소수 범주(이상치)는 개체수가 적을 것이므로 적은 분기만으로 고립이 가능하다는 가정
+        * 따라서, 고립시키는데에 많은 분기가 필요하면 정상, 적은 분기가 필요하다면 이상치데이터로 판단함
+
+        ![image](https://user-images.githubusercontent.com/77199749/201831471-541147c9-d165-422a-bfd3-cdffad30a401.png)
+
+        * 결과해석: Isolation Forest는 Forest의 장점을 이상치 탐지에 잘 녹여내었다고 볼 수 있다. 위 그림에서 처럼, 분기 수가 많이 필요없는 이상치 데이터들은 전부 이상치로 잘 분류되어지고, 분기가 많이 필요한, 즉 정상 데이터들은 정상으로 분류됨을 볼 수 있다. 여러개의 밀집된 군집이 형성되어 있을 때 사용하면 효과적인 이상치 탐지 성능을 볼 수 있을 것이다.
+    
+    4. Isolation Forest
+        * Forest라는 단어에서 알 수 있듯이, 분기를 하면서 이상치여부를 따지는 tree구조의 모델임
+        * 이 때, 소수 범주(이상치)는 개체수가 적을 것이므로 적은 분기만으로 고립이 가능하다는 가정
+        * 따라서, 고립시키는데에 많은 분기가 필요하면 정상, 적은 분기가 필요하다면 이상치데이터로 판단함
+
+        ![image](https://user-images.githubusercontent.com/77199749/201831471-541147c9-d165-422a-bfd3-cdffad30a401.png)
+
+        * 결과해석: Isolation Forest는 Forest의 장점을 이상치 탐지에 잘 녹여내었다고 볼 수 있다. 위 그림에서 처럼, 분기 수가 많이 필요없는 이상치 데이터들은 전부 이상치로 잘 분류되어지고, 분기가 많이 필요한, 즉 정상 데이터들은 정상으로 분류됨을 볼 수 있다. 여러개의 밀집된 군집이 형성되어 있을 때 사용하면 효과적인 이상치 탐지 성능을 볼 수 있을 것이다.
+
+    5. Isolation Forest
+        * Forest라는 단어에서 알 수 있듯이, 분기를 하면서 이상치여부를 따지는 tree구조의 모델임
+        * 이 때, 소수 범주(이상치)는 개체수가 적을 것이므로 적은 분기만으로 고립이 가능하다는 가정
+        * 따라서, 고립시키는데에 많은 분기가 필요하면 정상, 적은 분기가 필요하다면 이상치데이터로 판단함
+
+        ![image](https://user-images.githubusercontent.com/77199749/201831471-541147c9-d165-422a-bfd3-cdffad30a401.png)
+
+        * 결과해석: Isolation Forest는 Forest의 장점을 이상치 탐지에 잘 녹여내었다고 볼 수 있다. 위 그림에서 처럼, 분기 수가 많이 필요없는 이상치 데이터들은 전부 이상치로 잘 분류되어지고, 분기가 많이 필요한, 즉 정상 데이터들은 정상으로 분류됨을 볼 수 있다. 여러개의 밀집된 군집이 형성되어 있을 때 사용하면 효과적인 이상치 탐지 성능을 볼 수 있을 것이다.
+
+  
+</details>
     
 ==========================================================================
 ## Reference
