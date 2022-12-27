@@ -300,10 +300,13 @@
           * 파이모델 에선, 같은 모델(구조)이 teacher와 student의 역할을 모두 감당함 --> 오분류될 확률이 높음
           * 따라서, 파이모델과 다르게 target의 quality가 개선되어야 함!
           * 개선 방법: perturbations을 신중히 함 or teacher model을 student와 다른 모델을 사용
+    
+    
+    
+          ![image](https://user-images.githubusercontent.com/77199749/209635382-08441dfa-fef6-45fb-a469-8c790bc1e830.png)
+
           
-          
-          
-          ![image](https://user-images.githubusercontent.com/77199749/209634785-f8ac26f2-2a82-4f5e-96a4-9994682cf8b8.png)
+
 
          
           
@@ -361,7 +364,7 @@
         ** 결과해석:
         먼저, CIFAR-10 데이터셋을 활용하여 동일한 파라미터로 실험
         
-        3모델의 trainable parameter는 1467610로 고정하였으므로, 작은 노이즈에 취약하지 않은 강건한 모델인 VAT의 성능이 가장 높은 것을 볼 수 있다. teacher와 student를 분리하여 학습한 mean teacher는 속도와 성능 면에서 pi-model에 비해 증가하였으나, VAT처럼 큰 변화는 없었다. 일관성 제약의 접근을 고려하였을 때, 이미지들의 분류성능을 가장 높일 수 있는 준지도 학습 모델은 VAT인 것을 속도와 성능면에서 모두 확인 할 수 있었다.
+        3가지 모델의 trainable parameter는 1467610로 고정하였으므로, 작은 노이즈에 취약하지 않은 강건한 모델인 VAT의 성능이 가장 높은 것을 볼 수 있다. teacher와 student를 분리하여 학습한 mean teacher는 속도와 성능 면에서 pi-model에 비해 증가하였으나, VAT처럼 큰 변화는 없었다. 일관성 제약의 접근을 고려하였을 때, 이미지들의 분류성능을 가장 높일 수 있는 준지도 학습 모델은 VAT인 것을 속도와 성능면에서 모두 확인 할 수 있었다.
         
         
         
