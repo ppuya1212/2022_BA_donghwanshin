@@ -336,6 +336,10 @@
 
           
           ![image](https://user-images.githubusercontent.com/77199749/209634228-c69b5103-6399-49a1-aece-78523206636f.png)
+    
+    
+    
+          ![image](https://user-images.githubusercontent.com/77199749/209634711-d2db1e60-d193-4dd7-9073-166dd9de7c6b.png)
         
 
           
@@ -345,10 +349,18 @@
           * 적대적 학습(Adversarial training)기법을 활용해 모델이 가장 취약한 방향으로 학습
           * 모델의 강건성을 높임
           * 원본이미지와 적대적학습 이미지의 loss값을 통하여 학습함
+    
+    
+          ![image](https://user-images.githubusercontent.com/77199749/209635561-402803a8-e0dc-4c30-aa40-ac44b4bc38da.png)
+    
+    
+    
+          ![image](https://user-images.githubusercontent.com/77199749/209635597-cc08cddc-4f6f-47f8-a736-181f69984c91.png)
+
+
           
           
           
-          ![image](https://user-images.githubusercontent.com/77199749/209634711-d2db1e60-d193-4dd7-9073-166dd9de7c6b.png)
 
    
 
@@ -363,6 +375,7 @@
         
         ** 결과해석:
         먼저, CIFAR-10 데이터셋을 활용하여 동일한 파라미터로 실험
+    
         
         3가지 모델의 trainable parameter는 1467610로 고정하였으므로, 작은 노이즈에 취약하지 않은 강건한 모델인 VAT의 성능이 가장 높은 것을 볼 수 있다. teacher와 student를 분리하여 학습한 mean teacher는 속도와 성능 면에서 pi-model에 비해 증가하였으나, VAT처럼 큰 변화는 없었다. 일관성 제약의 접근을 고려하였을 때, 이미지들의 분류성능을 가장 높일 수 있는 준지도 학습 모델은 VAT인 것을 속도와 성능면에서 모두 확인 할 수 있었다.
         
@@ -377,6 +390,7 @@
         
         ** 전체 결과해석:
         먼저, MNIST 데이터셋을 활용하여 동일한 파라미터로 실험    
+    
         
         Temporal Ensemble에선 output이 불안정하여 EMA(Exponential moving average)로 누적하여 안정성을 높인 것을 택하였지만, mean teacher에서는 teacher와 student를 각각 지정해 'student의 가중치를 EMA하여 teacher에 사용'하였다. 결과에서도 볼 수 있듯이, Temporal Ensembling의 주요 기법인 output의 평균값을 적용하는 것보다, Mean teacher처럼, teacher와 student를 지정하여서 학습하게 하는 것이 메모리의 부담도 적고 속도와 성능면에서 뛰어난 것을 알 수 있었다.
         
