@@ -247,71 +247,121 @@
 <details>
     <summary> View Contents </summary>
     
-  * Semi-supervised Learning: asdf
-  
-  * Consistency Regularization
-    * asdf
+  * Semi-supervised Learning
+    * 실제 데이터들은 label data가 적고, unlabeled data가 많아서 때 사용가능한 기법임
+    * 이 때 labeled data에 대해선 supervised loss를 사용하나 unlabeled data에 대해선 unsupervised loss를 사용함
+    * 목표는 unlabeled data로 산출된 x와 그 데이터의 변형된 값에 의해 산출된 x_hat의 차이가 최소화되는 모델을 구축하는 것임
+    * 준지도학습은 크게 두가지로 나눌 수 있음
     
-  * Holisitic Methods
-    * asdf
+  
+      1. Consistency Regularization
+        * 일관성 제약 관점에서 접근함
+        * Unlabled data들끼리의 분포나 결과값을 가지고 일관성을 유지하는 방향으로 학습함
+
+
+      2. Holisitic Methods
+        * 종합적인 관점에서 접근함
+        * 여러 semi-supervised learning 기법들을 통합하고 Mixup data augmentation을 적용하여 학습함
+    
 
 
   * 아래 Consistency Regularization기반 기법들을 소개함
       1. 𝚷−Model
 
-          * ㅁ
-
-
+          * 2015년 출시된 Ladder Network에선 Layer-wise latent vector들의 consistency를 고려하였다면,
+          * 파이모델에선, latent vector가 아닌 Output vector들의 consistency를 고려함
+          * 하나의 FFN(Feed-Forward Neural Network)에 2번의 Perturbation(변형)을 적용함
+          * Supervised loss: Cross Entropy
+          * Unsupervised loss: MSE 
+          * Total loss = Cross Entropy + w*MSE
           
-          * 결과해석: ㅁ
+          
+          
+          ![image](https://user-images.githubusercontent.com/77199749/209635145-558c64fb-c55b-4cdc-b268-258597c9dca4.png)
+
           
           
       2. Temporal Ensemble
 
-          * ㅁ
+          * 파이모델의 한계점이 ‘single network＇이었기 때문에,
+          * Multiple previous network evaluation의 예측 값들을 앙상블 prediction으로 취합함
+          * Teacher 모델의 Output이 불안정(noisy)하므로, EMA로 누적해 안정성을 높임
+          * (단점) Epoch마다 데이터 Z를 보관할 용량이 필요함 <-- 누적된 벡터값이 Z에 저장
           
           
           
-          * 결과해석: ㅁ
-          
-         
+          ![image](https://user-images.githubusercontent.com/77199749/209634856-e0eca228-ca59-40ab-b469-25c92ca99756.png)
+
+        
           
       3. Mean Teacher
 
-          * ㅁ
+          * 새로 학습된 정보는 각 epoch당 한 번만 업데이트되기 때문에 느린 속도로 학습에 반영됨
+          * 파이모델 에선, 같은 모델(구조)이 teacher와 student의 역할을 모두 감당함 --> 오분류될 확률이 높음
+          * 따라서, 파이모델과 다르게 target의 quality가 개선되어야 함!
+          * 개선 방법: perturbations을 신중히 함 or teacher model을 student와 다른 모델을 사용
           
           
           
-          * 결과해석: ㅁ
-          
+          ![image](https://user-images.githubusercontent.com/77199749/209634785-f8ac26f2-2a82-4f5e-96a4-9994682cf8b8.png)
+
+         
           
       4. Dual Students
 
-          * ㅁ
+          * 학습을 무수히 반복하였을 때, teacher model은 student model로 수렴하게 될 것임
+          * 어떠한 biased & unstable predictions들도 다 student model로 수행되기 때문
+          * (해결책) EMA teacher 모델이 다른 student 모델로 대신 되어야함! Teacher를 없애자!!
           
+     
           
-          
-         
-          * 결과해석: ㅁ
-          
-          
-      5. FastSWA
+          ![image](https://user-images.githubusercontent.com/77199749/209633956-0eec198e-1d7d-4bed-b2cf-3a866c5e7554.png)
 
-          * ㅁ
+
+          
+          
+      5. FastSWA(Stochastic Weight Averaging)
+
+          * (파이모델과 mean teacher의 한계점1) 중요한 단계들을 훈련이 끝나갈 때에 weight space에서 벌어짐.
+          * (파이모델과 mean teacher의 한계점2) 또한, 훈련이 끝나 갈 때즈음, flat region이 생김 --> 훈련 막바지에도 다양한 predictions값을 산출
+          * (Resolution) Cyclic learning rate을 사용하여 가중치를 평균냄: Stochastic Weight Averaging(SWA)
+          * 몇번의 epoch이 지나면, learning rate를 바꾸어서 학습을 several cycles동안 반복함
+          * (SWA) Cycle의 마지막 weight값(=learning rate의 최소값)을 저장하고 평균내서 사용함
+          * (Fast-SWA) 한 Cycle내 여러 개의 weight값들을 저장하고 평균내서 사용함![image](https://user-images.githubusercontent.com/77199749/209634374-ff0c971d-1ff6-4235-97c7-76e6bfa01e8d.png)
+
+
+
+          
+          ![image](https://user-images.githubusercontent.com/77199749/209634228-c69b5103-6399-49a1-aece-78523206636f.png)
+        
+
+          
+          
+       6. Virtual Adversarial Training(VAT)
+
+          * 적대적 학습(Adversarial training)기법을 활용해 모델이 가장 취약한 방향으로 학습
+          * 모델의 강건성을 높임
+          * 원본이미지와 적대적학습 이미지의 loss값을 통하여 학습함
           
           
           
-          * 결과해석: ㅁ
-          
+          ![image](https://user-images.githubusercontent.com/77199749/209634711-d2db1e60-d193-4dd7-9073-166dd9de7c6b.png)
+
+   
 
 
     * 최종실험결과비교(정확도 높은순, dataset: CIFAR10, batch_size = 256)
     
-        1.VAT 정확도: 65.07%
+        1.VAT 정확도: 65.07% (0.597 iter/sec)
         
-        2.Mean Teacher 정확도: 59.29%
+        2.Mean Teacher 정확도: 59.29% (0.759 iter/sec)
         
-        3.Pi-Model 정확도: 59.14%
+        3.Pi-Model 정확도: 59.14% (0.886 iter/sec)
+        
+        ** 결과해석:
+        먼저, CIFAR-10 데이터셋을 활용하여 동일한 파라미터로 실험
+        
+        3모델의 trainable parameter는 1467610로 고정하였으므로, 작은 노이즈에 취약하지 않은 강건한 모델인 VAT의 성능이 가장 높은 것을 볼 수 있다. teacher와 student를 분리하여 학습한 mean teacher는 속도와 성능 면에서 pi-model에 비해 증가하였으나, VAT처럼 큰 변화는 없었다. 일관성 제약의 접근을 고려하였을 때, 이미지들의 분류성능을 가장 높일 수 있는 준지도 학습 모델은 VAT인 것을 속도와 성능면에서 모두 확인 할 수 있었다.
         
         
         
@@ -321,6 +371,11 @@
         1.Mean Teacher 정확도: 99.38%
         
         2.Temporal Ensemble 정확도: 95.20%
+        
+        ** 전체 결과해석:
+        먼저, MNIST 데이터셋을 활용하여 동일한 파라미터로 실험    
+        
+        Temporal Ensemble에선 output이 불안정하여 EMA(Exponential moving average)로 누적하여 안정성을 높인 것을 택하였지만, mean teacher에서는 teacher와 student를 각각 지정해 'student의 가중치를 EMA하여 teacher에 사용'하였다. 결과에서도 볼 수 있듯이, Temporal Ensembling의 주요 기법인 output의 평균값을 적용하는 것보다, Mean teacher처럼, teacher와 student를 지정하여서 학습하게 하는 것이 메모리의 부담도 적고 속도와 성능면에서 뛰어난 것을 알 수 있었다.
         
 
   
