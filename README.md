@@ -241,6 +241,90 @@
 
   
 </details>
+
+
+## 5. Semi-supervised Learning
+<details>
+    <summary> View Contents </summary>
+    
+  * Semi-supervised Learning: asdf
+  
+  * Consistency Regularization
+    * asdf
+    
+  * Holisitic Methods
+    * asdf
+
+
+  * 아래 Consistency Regularization기반 기법들을 소개함
+      1. 𝚷−Model
+
+          * ㅁ
+
+
+          
+          * 결과해석: ㅁ
+          
+          
+      2. Temporal Ensemble
+
+          * ㅁ
+          
+          
+          
+          * 결과해석: ㅁ
+          
+         
+          
+      3. Mean Teacher
+
+          * ㅁ
+          
+          
+          
+          * 결과해석: ㅁ
+          
+          
+      4. Dual Students
+
+          * ㅁ
+          
+          
+          
+         
+          * 결과해석: ㅁ
+          
+          
+      5. FastSWA
+
+          * ㅁ
+          
+          
+          
+          * 결과해석: ㅁ
+          
+
+
+    * 최종실험결과비교(정확도 높은순, dataset: CIFAR10, batch_size = 256)
+    
+        1.VAT 정확도: 65.07%
+        
+        2.Mean Teacher 정확도: 59.29%
+        
+        3.Pi-Model 정확도: 59.14%
+        
+        
+        
+
+    * 최종실험결과비교(정확도 높은순, dataset: MNIST, batch_size = 64)
+    
+        1.Mean Teacher 정확도: 99.38%
+        
+        2.Temporal Ensemble 정확도: 95.20%
+        
+
+  
+</details>
     
 =========================================================================
 ## Reference
